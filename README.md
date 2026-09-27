@@ -1,4 +1,4 @@
-# Hi, I'm [Emmanuel Addo Larbi] 👋
+# Hi, I'm Emmanuel Addo Larbi 👋
 
 ### Aspiring Cybersecurity Analyst | CompTIA Security+ (SY0-701) Candidate
 
