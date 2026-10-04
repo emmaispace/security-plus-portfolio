@@ -1,41 +1,58 @@
-# 🏗️ Home Lab Environment
+# Security+ Lab Environment
 
-> **Objective:** An isolated virtual network for safe, legal security practice.
-> Victim VMs have no route to the internet; only the attacker/analysis VM gets
-> a temporary NAT adapter when downloads are needed.
+## Purpose
 
-## Topology
+This directory documents the isolated virtual cybersecurity
+laboratory created for my CompTIA Security+ SY0-701 preparation.
 
-![Lab network diagram](network-diagram.png)
-<!-- Draw yours free at https://diagrams.net — export as PNG into this folder -->
+The lab provides a controlled environment for:
 
-| VM | Role | OS | RAM | Network |
-| --- | --- | --- | --- | --- |
-| Kali | Attacker / analysis | Kali Linux | 4 GB | Host-only `192.168.56.0/24` (+temp NAT) |
-| Metasploitable 2 | Intentionally vulnerable target | Ubuntu 8.04 | 1 GB | Host-only only — **no internet, ever** |
-| Ubuntu Server | SIEM / services / hardening target | Ubuntu 24.04 LTS | 2 GB | Host-only + internal `dmz` |
-| Windows 11 Eval | Endpoint / GPO / hardening target | Windows 11 Ent. Eval | 4 GB | Host-only + internal `lan` |
-| pfSense | Zone firewall/router (Project 3) | pfSense CE | 1 GB | WAN host-only, DMZ `10.10.10.0/24`, LAN `10.20.20.0/24` |
+- Security+ practical exercises
+- Network security testing
+- Vulnerability assessment
+- Security monitoring
+- SIEM exercises
+- Incident response
+- Detection engineering
+- Security architecture
+- Governance and risk exercises
 
-## Why host-only isolation matters
+## Virtualization
 
-Metasploitable 2 ships with real, weaponizable vulnerabilities (e.g. the vsftpd
-2.3.4 backdoor). Exposing it to any network I don't fully control would be
-negligent. Host-only networking lets VMs talk to each other and my host, but
-gives them **no default route to the internet** — segmentation as a first principle.
+- VMware Workstation Pro
+- Windows host
+- Isolated virtual networks
+- pfSense firewall
 
-## Verification
+## Network Segmentation
 
-```bash
-# From Kali — reach the target:
-$ ping -c 3 192.168.56.102     # ✅ 3 replies
-# From Metasploitable — confirm isolation:
-$ ping -c 3 8.8.8.8            # ✅ 100% packet loss = properly isolated
-```
+| Network | Subnet | Purpose |
+|---|---|---|
+| LAB-LAN | 192.168.10.0/24 | Internal systems |
+| LAB-DMZ | 192.168.20.0/24 | Web server |
+| LAB-SOC | 192.168.40.0/24 | Security monitoring |
+| LAB-ATTACK | 192.168.50.0/24 | Security testing |
 
-## Snapshots
+## Systems
 
-Every VM carries a `clean-install` snapshot taken before any lab work —
-my universal undo button after destructive exercises.
+| Host | Role | Network |
+|---|---|---|
+| SEC-PFSENSE | Firewall/router | All networks |
+| DC01 | Domain Controller/DNS | LAN |
+| WIN01 | Windows client | LAN |
+| FS01 | File server | LAN |
+| WEB01 | IIS web server | DMZ |
+| WAZUH01 | SIEM/security monitoring | SOC |
+| KALI01 | Security testing | ATTACK |
 
-**Full build walkthrough:** [setup-guide.md](setup-guide.md) *(mirror of Lab Manual — Tutorial 0)*****
+## Security Principle
+
+The environment is designed to remain isolated from
+the physical/home network.
+
+All offensive-security testing is performed only against
+systems intentionally created for this laboratory.
+
+## Week 0 Status
+
+Lab environment established and operational.
